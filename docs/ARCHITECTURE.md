@@ -8,8 +8,15 @@ The Digitone MK1 (and Digitone Keys) runs on a dual ColdFire processor layout:
    * Executes Section 3 of the firmware depacked into DDR RAM at `0x40000400`.
    * Runs an RTOS handling the user interface (128x64 OLED display, 72 key LEDs, encoders), 24 PPQN sequencer timing, project storage (+Drive), USB/MIDI communication, audio routing, send effects (delay, reverb, chorus, overdrive), and master mixing.
    * Total DDR RAM: 128 MB (`0x40000000` to `0x48000000`). Stack grows downward from `0x48000000`.
-   * Mod code execution area (`core-dn1` 4.0+): `0x43EC0000` - `0x44000000` (1.25 MB allocated for mod code, tables, and variables).
+   * Mod code execution area (`core-dn1` 4.0+): `0x43EC0000` - `0x44000000` (nominally 1.25 MB for mod code, tables, and variables).
    * **Bulk Buffer Area (`0x44000000` - `0x47BE0000`):** ~60 MB of contiguous unmapped DDR available for mods requiring large memory buffers (e.g. 60-second audio loopers, delay memory, custom sample buffers).
+   * > **RAM figures are nominal/approximate and vary by release.** Measured
+     > per-release values are authoritative: Synth 0.2 reports **1.2 MB free
+     > fast SRAM** (`firmware/releases/v1.44-synth-0.2/README.md`), while
+     > SuperPack 0.2 reports `0x43ec0000`–`0x43f20620` used
+     > (`firmware/releases/v1.44+-0.2/README.md`). Do not treat the 1.25 MB
+     > nominal figure as free headroom — check the release README and
+     > `digihealth` free-RAM meter instead.
    * Target architecture for compilation: ColdFire V4 (`-mcpu=54455`, `m68k-linux-gnu-gcc` / `m68k-elf-gcc`).
 
 2. **Sound Engine CPU (Second ColdFire MCF5441x, referred to as the DSP):**

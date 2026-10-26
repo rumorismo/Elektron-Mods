@@ -64,16 +64,30 @@ if (newer_track >= 1) {
 }
 ```
 
-### 2. Cap Total Global Modded Voices to 2
-Because stock processing occupies 56.6% of CPU #1, render at most **2 custom voices simultaneously across all 4 tracks**:
+### 2. Cap Total Global Modded Voices to 1 (current shipped behavior)
+
+> **Current truth (Release 0.2, October 2026): the engine enforces a strict
+> 1-voice monophonic budget (`newer_all >= 1`)** in
+> `tools/elekloader/mods/machines-dn1/machines.c`, matching the 0.2 release
+> notes (`firmware/releases/v1.44-synth-0.2/README.md`,
+> `firmware/releases/v1.44+-0.2/README.md`). One software voice costs
+> ~22,000 ticks; two concurrent voices cost ~44,000, pushing total load to
+> ~94,000 ticks (>105% overrun). (The older `newer_all >= 2` 2-voice guidance
+> was pre-0.2 and no longer ships.)
+Because stock processing occupies 56.6% of CPU #1, render at most **1 custom
+voice at a time across all 4 tracks**:
 ```c
-if (newer_all >= 2) {
+if (newer_all >= 1) {
     vs[v].stage = OFF;
     vs[v].level = 0;
     vs[v].v.gate = 0;
 }
 ```
-This guarantees that custom synthesis never consumes more than ~15–20% of CPU #1, keeping total CPU under 75% under all playing conditions.
+This guarantees that custom synthesis never consumes more than ~10% of CPU #1
+(one voice ≈ 22,000 ticks ≈ 25% of the block worst-case, retired immediately
+on the next note-on by `dnm_voice_on` stealing), keeping total CPU under ~75%
+under all playing conditions. (Pre-0.2 code used `newer_all >= 2`; do not
+revert to 2 without re-measuring the ~94k-tick overrun documented above.)
 
 ### 3. Clean Envelope Cutoff
 Do not let exponential or slow linear release tails compute down to `-90 dB` (1/32768):

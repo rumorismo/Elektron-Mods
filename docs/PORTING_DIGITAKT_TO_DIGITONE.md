@@ -1,6 +1,6 @@
 # Porting Digitakt MK1 Modules to Digitone MK1: Architecture & UI/UX Guide
 
-This guide documents the architectural, DSP, control-surface, parameter-slot, and UI/UX differences between the **Elektron Digitakt MK1** (OS 1.53 / 1.54) and the **Elektron Digitone MK1 / Keys** (OS 1.43 / 1.44), along with proven best practices for porting community modules (`digi1_mods`, `digisophie`, `digistring`, `elektrob-1`, etc.) across the two platforms using `elekloader`.
+This guide documents the architectural, DSP, control-surface, parameter-slot, and UI/UX differences between the **Elektron Digitakt MK1** (OS 1.53 / 1.54) and the **Elektron Digitone MK1 / Keys** (OS 1.43 / 1.44), along proven best practices for porting community modules (`digi1_mods`, `digisophie`, `digitables`, etc.) across the two platforms using `elekloader`.
 
 ---
 
@@ -44,8 +44,8 @@ On the Digitone, `machines-dn1` borrows the existing FM sound slots so that **Pa
 | `2` | **C** | `A` Ratio | `19` | `0..35` (36 indices) | Leave unused (`0`) |
 | `3` | **D** | `B` Ratio | `20` | `0..323` | Leave unused (`0`) |
 | `4` | **E** | `HARM` | `21` | `-26..+26` | Leave unused (`0`), or bipolar fine control |
-| `5` | **F** | `DTUN` | `22` | **`0..127`** | Auxiliary `0..127` control (e.g. `VCF` cutoff on `SH-101`, `FOLD` on `SINE`) |
-| `6` | **G** | `FDBK` | `23` | **`0..127`** | Auxiliary `0..127` control (e.g. `RES` on `SH-101`, `SUB` on `SINE`) |
+| `5` | **F** | `DTUN` | `22` | **`0..127`** | Auxiliary `0..127` control (e.g. `TIMB` on `MACRO`, `FOLD` on `SINE`) |
+| `6` | **G** | `FDBK` | `23` | **`0..127`** | Auxiliary `0..127` control (e.g. `MORP` on `MACRO`, `SUB` on `SINE`) |
 | `7` | **H** | `MIX` | `24` | `-63..+63` | Leave unused (`0`), or bipolar balance |
 
 ### `SYN2` Page 1 (`knobs[8..15]`) — Uniform `0..127` Ranges
@@ -88,14 +88,15 @@ In [`tools/elekloader/mods/machines-dn1/machines.c`](../tools/elekloader/mods/ma
 
 ## 5. CPU #1 Load & EMAC Register Safety Checklist
 
-When porting a Digitakt DSP engine (`mono.c`, `sh101.c`, `macro.c`, `sophie.c`) to Digitone:
+When porting a Digitakt DSP engine (`mono.c`, `macro.c`, `sophie.c`; `sh101.c` reference-only, not shipped — see note below) to Digitone:
 
 1. **Always Save and Restore ColdFire EMAC Registers**:
    - The Digitone's audio interrupt on CPU #1 uses the ColdFire hardware Multiply-Accumulate unit (`MACSR`, `ACC0`, `ACCEXT01`) in its per-voice multimode filters right after `ev_render_voices`.
    - Any custom machine using `mac.l` / `msac.l` **must** wrap its render block in `emac_enter()` and `emac_leave()` to save and restore `MACSR`, `ACC0`, and `ACCEXT01`.
 2. **Account for Polyphony vs. Per-Track Monophony**:
    - On Digitakt, a track only ever triggers 1 voice. On Digitone, playing a 4-note chord on a track calls your machine's `render()` **4 times per audio block** (once for each allocated voice `0..7`).
-   - For lightweight engines (`SINE`, `SAW`, `PULSE`, `NOISE`, `PSIN`, `SH-101`), polyphonic voice allocation works great across multiple voices.
+   - For lightweight engines (`SINE`, `SAW`, `PULSE`, `NOISE`, `PSIN`), polyphonic voice allocation works great across multiple voices.
+   - > **SH-101 removed from shipping builds:** `modules/dn-monomachine/sh101.c` is retained as source reference only — it is **not** registered in the `dnmono.c` machine table (which ships SAW, PULSE, ENS, CHORD, VO-6, NOISE, PSIN, MACRO, SOPHIE: IDs 10–16, 18, 19) and is not described in the dnmono `mod.json`. Do not port new Digitakt engines onto SH-101 knob layouts; use the shipped `MACRO`/`SINE`-style `SYN2` `0..127` slots.
    - For CPU-intensive physical/FM percussion models (`SOPHIE`), use a **per-track newest-wins voice cap** (`rank >= 1` per `v->track` outputs silence) so rapid trigs or chords on a percussion track never starve CPU #1, while all 4 tracks can still play simultaneously.
 3. **Never Run Plain `uv sync` in `tools/digiemu`**:
-   - `digiemu` requires the custom-compiled `unicorn.dll` (built with Visual Studio 2026 via `tools\install-patched-unicorn.ps1`) for accurate ColdFire EMAC and CCR emulation.
+   - `digiemu` requires the custom-compiled `unicorn.dll` (built with Visual Studio 2026 via `tools\install-patched-unicorn.ps1`) for accurate ColdFire EMAC and CCR emulation. A plain `uv sync` installs the stock Unicorn wheel, which lacks the EMAC/CCR patches and silently mistimes audio and corrupts MAC-unit DSP results — always (re)run `tools\install-patched-unicorn.ps1` after any sync or fresh clone (see `docs/EMULATOR_WORKFLOW.md`).

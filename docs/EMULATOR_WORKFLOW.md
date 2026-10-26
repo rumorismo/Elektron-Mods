@@ -27,10 +27,17 @@ uv sync
 ## 3. Initializing and Booting the Digitone
 
 ### Step 1: Add Firmware
-Run the portable runner to unpack the `.syx` and prepare the snapshot:
+Run the portable runner to unpack the `.syx` and prepare the snapshot.
+`--add` identifies the file, creates a firmware folder named
+`<device>-<version>-<sha-prefix>`, and builds it in a first-run worker
+(cold boot + ladder + intro + settle, ~25–35 s on first run):
+
 ```powershell
 uv run python -m emu.portable --add D:\Elektron-MODS\firmware\Digitone_and_Digitone_Keys_OS1.44.syx
 ```
+
+This creates `portable/firmware/dn1-1.44-d4f200d0/` (`d4f200d0` = first 8 hex
+digits of the stock SHA-256 `d4f200d0…9659`).
 
 ### Step 2: First Boot & +Drive Initialization
 The very first boot performs cold-boot tasks and formats a virtual +Drive (takes ~25-35 seconds on a modern CPU).
@@ -39,11 +46,40 @@ uv run python -m emu.portable
 ```
 Click **Play** in the launcher. Once the factory UI settles, it saves a snapshot so future boots start up instantly.
 
-### Step 3: Direct Panel Launch
-To launch the Digitone virtual panel directly:
+### Step 3: Direct Panel Launch (no launcher)
+To launch the Digitone virtual panel directly on an already-built snapshot,
+pass the snapshot folder (or `--syx` to build/open a `.syx` in one step):
+
 ```powershell
+# Resume the stock snapshot built by --add:
+uv run python -m emu.dnpanel portable\firmware\dn1-1.44-d4f200d0
+# …or open a .syx directly (builds the snapshot if missing):
 uv run python -m emu.dnpanel default --syx D:\Elektron-MODS\firmware\Digitone_and_Digitone_Keys_OS1.44.syx
 ```
+
+Full CLI: `uv run python -m emu.dnpanel [snapshot] [--syx PATH] [--save-on-exit PATH] [--no-audio] [--app]`.
+
+### Step 4: One-Click `.bat` Launchers (`--worker panel` workflow)
+The repo root ships launchers that skip the GUI launcher and open the panel
+in a `--worker panel` process directly on a pinned snapshot folder:
+
+| Launcher | Snapshot folder | Firmware |
+| :--- | :--- | :--- |
+| `run-stock-digitone.bat` | `tools\digiemu\portable\firmware\dn1-1.44-d4f200d0` | Stock OS 1.44 |
+| `run-modded-digitone.bat` | `tools\digiemu\portable\firmware\dn1-144s-02af17fd` | MODDED OS 144S (Release 0.1: Monomachine, Plaits MACRO, SOPHIE) |
+| `run-emulator.bat` | — | Opens the launcher (`emu.portable` with no args); pick any firmware |
+
+Each `.bat` runs:
+
+```bat
+".venv\Scripts\python.exe" -m emu.portable --worker panel "%~dp0tools\digiemu\portable\firmware\dn1-1.44-d4f200d0"
+```
+
+`--worker panel <fwdir>` resumes that folder's settled snapshot
+(`choose_snapshot` picks `resume.snap`; exit 3 / "Rebuild needed" means the
+snapshot no longer matches — re-run `--add` on the `.syx`). A third snapshot
+already exists locally: `dn1-144s-12e89a30` (Synth 0.2, `12e89a30…4b486`).
+Snapshot folders stay local (see `.gitignore`); never commit them.
 
 ## 4. Testing Patched Mod Firmwares
 

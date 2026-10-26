@@ -32,4 +32,5 @@ Thumbs.db
 
 # Keep manifests and docs (negations must come after ignores, but *.syx is fully ignored)
 # Stock OS reference stays documented by hash in docs/REPO.md, file itself stays local
-# Release .syx.json manifests are also ignored via *.json? No - only *.map.json above, so keep .syx.json
+# Only *.map.json is ignored above: release .syx.json manifests match NO ignore
+# pattern, so they stay tracked in git. Do not add *.syx.json (or *.json) here.

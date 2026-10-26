@@ -45,7 +45,7 @@ The **8-Track Matrix Expansion** doubles the sequencer and synthesis matrix of t
 
 ## 3. Included Mods in this Build
 
-This firmware (`Digitone_OS1.44_8Tracks.syx`) links 7 modular elemods:
+This firmware (`Digitone_OS1.44_8Tracks7.syx`) links 7 modular elemods:
 1. `core-dn1-4.1`: Boot copier, hook bus, 1.25 MB fast RAM mapping, and event dispatcher.
 2. `tracks-1.4`: 8-Track and 16-Track Matrix Expansion, single-press toggle, Green LED control, popup HUD, independent bank mutes, continuous live playback, Settings menu integration.
 3. `machines-0.2`: Machine framework and 4x2 parameter grid overlay.
@@ -61,8 +61,8 @@ This firmware (`Digitone_OS1.44_8Tracks.syx`) links 7 modular elemods:
 1. Connect the Digitone MK1 or Digitone Keys to your computer via USB.
 2. Power on the unit while holding **`[FUNC]`** to enter the **Early Startup Menu**.
 3. Press **`[TRIG 4]`** to enter **MIDI Upgrade** mode.
-4. Send `Digitone_OS1.44_8Tracks.syx` using **Elektron Transfer**, **C6**, or `amidi`:
+4. Send `Digitone_OS1.44_8Tracks7.syx` using **Elektron Transfer**, **C6**, or `amidi`:
    ```bash
-   amidi -p hw:1,0,0 -s Digitone_OS1.44_8Tracks.syx
+   amidi -p hw:1,0,0 -s Digitone_OS1.44_8Tracks7.syx
    ```
 5. Wait for the progress bar on the Digitone screen to complete (100%). The unit will verify checksums and reboot automatically.

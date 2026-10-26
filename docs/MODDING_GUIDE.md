@@ -12,9 +12,9 @@ If you simply want to install existing community mods on your Digitone, you do *
    * **`core-dn1` (v4.1)**: Essential foundation providing the Mod Menu (hold `T1`–`T4`) and hook engine.
    * **`digitables`**: M8-style pitch tables for arpeggios, trills, and strummed chords.
    * **`digihealth`**: Adds real-time CPU, DSP load, and free RAM to the top status bar.
-   * **`fxkit-dn1`**: Master effects insert framework with integrated mixer and 2 extra LFOs.
+   * **`fxkit`**: Master effects insert framework with integrated mixer and 2 extra LFOs.
    * **Pedal Effects**: `digiswarm` (chorus/ensemble/looper), `digiprism` (spectral resonator), `digireel` (tape saturation/flutter), `digihalo` (shimmer reverb), `digitide` (phaser/filter sweeps), `digitriad` (pitch shifter).
-   * **`machines-dn1`**: Replaces standard FM synthesis with alternative synth engine machines.
+   * **`machines`**: Replaces standard FM synthesis with alternative synth engine machines.
 4. Click **BUILD FIRMWARE**.
 5. Flash the output `.syx` file directly to your hardware using Elektron Transfer over USB.
 
@@ -43,6 +43,28 @@ Each mod directory defines metadata and hooks in `mod.json`:
 
 ## 3. The Development & Verification Loop
 
+### Build, Lint, Patch (exact commands)
+
+`sdk.build --out` takes a **directory** (default `<moddir>/out`); the `.elemod`
+filename `<id>-<version>-os<os>.elemod` is derived from the mod's `mod.json`
+(so source dirs carry `-dn1`, e.g. `mods/tracks-dn1`, while built elemod ids
+do not, e.g. `tracks-1.4-os1.44.elemod`). `patch` takes the stock `.syx` plus
+one `--mod` per elemod (core first), `--out`, and the 4-character `--version`
+shown on boot:
+
+```powershell
+# 1. Build the mod (run from tools/elekloader; --out is a directory)
+wsl bash -c "cd /mnt/d/Elektron-MODS/tools/elekloader && python3 -m elekloader.sdk.build mods/tracks-dn1 --stock ../../firmware/Digitone_and_Digitone_Keys_OS1.44.syx --out mods/tracks-dn1/out"
+# 2. Lint the built elemod against stock + core
+wsl bash -c "cd /mnt/d/Elektron-MODS/tools/elekloader && python3 -m elekloader.lint mods/tracks-dn1/out/tracks-1.4-os1.44.elemod --stock ../../firmware/Digitone_and_Digitone_Keys_OS1.44.syx --with ../../firmware/elemods/core-dn1-4.1-os1.44.elemod --json"
+# 3. Link core + mod(s) into a flashable .syx
+wsl bash -c "cd /mnt/d/Elektron-MODS/tools/elekloader && python3 -m elekloader.patch --stock ../../firmware/Digitone_and_Digitone_Keys_OS1.44.syx --mod ../../firmware/elemods/core-dn1-4.1-os1.44.elemod --mod mods/tracks-dn1/out/tracks-1.4-os1.44.elemod --out /mnt/d/Elektron-MODS/firmware/test.syx --version 1447"
+```
+
+For full firmware releases, use the checked-in link scripts instead of
+hand-rolled `patch` invocations (see `docs/REPO.md`):
+`tools/elekloader/build_8tracks.py`, `build_synth.py`, `build_syx.py`.
+
 ```
 ┌─────────────────────────────────┐
 │ Write C / ASM Code              │
@@ -50,12 +72,17 @@ Each mod directory defines metadata and hooks in `mod.json`:
                  │
                  ▼
 ┌─────────────────────────────────┐
-│ Compile to .elemod              │ (python -m elekloader.sdk.build <dir> --stock <syx>)
+│ Compile to .elemod              │ (python -m elekloader.sdk.build <moddir> --stock <stock.syx> --out <outdir>)
 └────────────────┬────────────────┘
                  │
                  ▼
 ┌─────────────────────────────────┐
-│ Patch via elekloader            │ (python -m elekloader.patch --stock <syx> --mod <elemod> --out modded.syx)
+│ Lint against stock + core       │ (python -m elekloader.lint <mod.elemod> --stock <stock.syx> --with <core.elemod> --json)
+└─────────────────┴───────────────┘
+                 │
+                 ▼
+┌─────────────────────────────────┐
+│ Patch via elekloader            │ (python -m elekloader.patch --stock <stock.syx> --mod <core.elemod> --mod <mod.elemod> --out modded.syx --version XXXX)
 └────────────────┬────────────────┘
                  │
                  ▼
