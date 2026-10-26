@@ -1,0 +1,29 @@
+{
+ "id": "dnmono", "version": "1.2",
+ "license": "GPL-2.0-or-later",
+ "title": "Monomachine, Plaits Macro & Sophie Pack (Digitone)", "category": "Sound", "author": "gdeo607 / Emilie Gillet / soejrd / port",
+ "description": "Nine synth machines ported from Digitakt's digimono, digimacro, and digisophie onto the Digitone mk1's machines-dn1 framework: SAW (SuperWave Saw), PULSE (SuperWave Pulse), ENS (4-oscillator Ensemble + chorus), CHORD (4-oscillator Chord machine), VO-6 (Formant vocal synthesizer), NOISE (Sample & hold / red / tuned noise), PSIN (3-sine poly with pitch env), MACRO (Mutable Instruments Plaits 8 engines: Waveshaping, 2-Op FM, Clocked Noise, Particles, Bass Drum, Snare, Hi-Hat, Formant Grains), and SOPHIE (4 metallic percussion models: FUSE, BOOM, PIPE, SHARD).",
+ "device": "digitone-mk1", "os": "1.43",
+ "ports": {"1.44": {}},
+ "sources": ["dnmono.c", "mono.c", "sine.c", "macro.c", "sophie.c"],
+ "contribute": [
+  {"to": "dn_machines", "order": 60, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_saw", 0]]},
+  {"to": "dn_machines", "order": 61, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_puls", 0]]},
+  {"to": "dn_machines", "order": 62, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_ens", 0]]},
+  {"to": "dn_machines", "order": 63, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_chord", 0]]},
+  {"to": "dn_machines", "order": 64, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_vo", 0]]},
+  {"to": "dn_machines", "order": 65, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_nois", 0]]},
+  {"to": "dn_machines", "order": 66, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_psin", 0]]},
+  {"to": "dn_machines", "order": 67, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_macro", 0]]},
+  {"to": "dn_machines", "order": 68, "data": "00000000", "relocs": [[0, "abs32", "sym:dnmono_sophie", 0]]}
+ ],
+ "resources": {
+  "names": [
+   "dnmachine:10", "dnmachine:11", "dnmachine:12", "dnmachine:13",
+   "dnmachine:14", "dnmachine:15", "dnmachine:16",
+   "dnmachine:18", "dnmachine:19"
+  ],
+  "core": "3.1"
+ },
+ "requires": ["core", "machines"]
+}

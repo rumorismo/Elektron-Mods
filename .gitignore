@@ -1,0 +1,35 @@
+# Elektron firmware derived files - never commit binaries (elekloader policy)
+*.syx
+*.bin
+*.elemod
+*.map.json
+*.o
+*.elf
+
+# Python / build
+__pycache__/
+*.pyc
+.venv/
+.uv/
+.venv*/
+*.egg-info/
+
+# digiemu - huge snapshots, logs, local venvs, nested clones stay local
+tools/digiemu/portable/
+tools/digiemu/.venv/
+tools/digiemu/logs/
+tools/digiemu/*.log
+tools/elekloader/.venv/
+tools/elekloader/out/
+**/out/*.elemod
+**/*.work/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.tmp
+*.bak
+
+# Keep manifests and docs (negations must come after ignores, but *.syx is fully ignored)
+# Stock OS reference stays documented by hash in docs/REPO.md, file itself stays local
+# Release .syx.json manifests are also ignored via *.json? No - only *.map.json above, so keep .syx.json

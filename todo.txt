@@ -1,0 +1,3 @@
+add arp to the midi 
+add global fx
+add browser that know where we left off from the tracks 
