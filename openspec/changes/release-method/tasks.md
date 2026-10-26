@@ -2,7 +2,7 @@
 
 ## 1. Adopt the existing scaffolding
 
-- [ ] 1.1 Commit the on-disk scaffolding (`tools/release.py`, `docs/RELEASE_METHOD.md`, dynamic `tests/smoke.ps1`, `docs/REPO.md`, `README.md` tree update, release archive moves) and verify `smoke.ps1` passes and `git status` shows no firmware tracked
+- [x] 1.1 Commit the on-disk scaffolding (`tools/release.py`, `docs/RELEASE_METHOD.md`, dynamic `tests/smoke.ps1`, `docs/REPO.md`, `README.md` tree update, release archive moves) and verify `smoke.ps1` passes and `git status` shows no firmware tracked
 - [ ] 1.2 Add `docs/RELEASE_METHOD.md` verification section (pyramid, evidence hierarchy, hardware checklist from the research: simultaneous instances, track isolation, project persistence, reboot survival) and verify every command in the doc runs as written
 
 ## 2. Constrained release driver
