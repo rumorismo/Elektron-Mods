@@ -113,9 +113,12 @@ try {
     if (Test-Path $f) { $combined += (Get-Content $f -Raw) + "`n" }
   }
   if ($p.ExitCode -eq 0) { Fail "truncated: --add exit 0 (should refuse)" }
-  if ($combined -notmatch 'truncated or damaged') {
+  # digiemu refuses truncation with either "is truncated: it ends inside a
+  # SysEx message" (identify path) or "is truncated or damaged: it holds N
+  # data messages" (release path).
+  if ($combined -notmatch 'truncated') {
     Write-Host ($combined | Select-Object -First 20)
-    Fail "truncated: missing 'truncated or damaged' diagnostic"
+    Fail "truncated: no truncation diagnostic in output"
   }
   $badSnaps = @(Get-ChildItem $negHome -Recurse -Filter "gui.snap" -ErrorAction SilentlyContinue)
   if ($badSnaps.Count -ne 0) { Fail "truncated: gui.snap written for damaged input" }
