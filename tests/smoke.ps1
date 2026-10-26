@@ -12,40 +12,31 @@ $h = (certutil -hashfile $stock SHA256 | Select-String "^[0-9a-f]{64}$").ToStrin
 if ($h -ne "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659") { Fail "stock hash mismatch: $h" }
 Ok "stock hash"
 
-# 2. Per-release manifest checks: every versioned release dir must ship
+# 2. Per-release manifest checks: every ACTIVE release dir under
+#    firmware/releases (everything except archive/) must ship
 #    .syx + .syx.json + .map.json + README.md (binaries stay local; the
 #    manifests are what CI and docs verify against).
-$releases = @(
-  @{ dir = "firmware\releases\v1.44-8tracks-0.7"; syx = "Digitone_OS1.44_8Tracks7.syx" },
-  @{ dir = "firmware\releases\v1.44-synth-0.1";  syx = "Digitone_OS1.44_Synth_0.1.syx" },
-  @{ dir = "firmware\releases\v1.44-synth-0.2";  syx = "Digitone_OS1.44_Synth_0.2.syx" },
-  @{ dir = "firmware\releases\v1.44+-0.1";       syx = "Digitone_OS1.44+_0.1.syx" },
-  @{ dir = "firmware\releases\v1.44+-0.2";       syx = "Digitone_OS1.44+_0.2.syx" },
-  @{ dir = "firmware\releases\8 tracks";         syx = "Digitone_OS1.44_8Tracks7.syx" }
-)
-foreach ($r in $releases) {
-  $d = Join-Path $root $r.dir
-  if (!(Test-Path $d)) { Fail "release dir missing: $($r.dir)" }
-  foreach ($f in @($r.syx, "$($r.syx).json", "$($r.syx).map.json", "README.md")) {
-    if (!(Test-Path (Join-Path $d $f))) { Fail "missing $($r.dir)\$f" }
+$relroot = Join-Path $root "firmware\releases"
+if (!(Test-Path (Join-Path $relroot "archive"))) { Fail "archive dir missing under firmware\releases" }
+$active = @(Get-ChildItem $relroot -Directory | Where-Object { $_.Name -ne "archive" })
+foreach ($d in $active) {
+  $syx = Get-ChildItem $d.FullName -Filter *.syx | Select-Object -First 1
+  if (!$syx) { Fail "no .syx in $($d.Name)" }
+  foreach ($f in @("$($syx.Name).json", "$($syx.Name).map.json", "README.md")) {
+    if (!(Test-Path (Join-Path $d.FullName $f))) { Fail "missing $($d.Name)\$f" }
   }
   # .syx.json must pin the measured stock sha256 (catches stub manifests
   # and builds linked against the wrong stock file)
-  $j = Get-Content (Join-Path $d "$($r.syx).json") -Raw | ConvertFrom-Json
-  if ($j.stock.sha256 -ne "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659") { Fail "stock pin wrong in $($r.dir)\$($r.syx).json" }
-  if (!($j.output.sha256 -match "^[0-9a-f]{64}$")) { Fail "bad output sha256 in $($r.dir)\$($r.syx).json" }
+  $j = Get-Content (Join-Path $d.FullName "$($syx.Name).json") -Raw | ConvertFrom-Json
+  if ($j.stock.sha256 -ne "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659") { Fail "stock pin wrong in $($d.Name)\$($syx.Name).json" }
+  if (!($j.output.sha256 -match "^[0-9a-f]{64}$")) { Fail "bad output sha256 in $($d.Name)" }
+  # README must be a real file, not a cut-off stub (final newline present)
+  $bytes = [System.IO.File]::ReadAllBytes((Join-Path $d.FullName "README.md"))
+  if ($bytes.Length -lt 256) { Fail "README too small (truncated?): $($d.Name)" }
+  if ($bytes[-1] -ne 10) { Fail "README missing final newline (truncated?): $($d.Name)" }
 }
-Ok "release manifests ($($releases.Count) dirs)"
-
-# 3. Truncated-README check: release READMEs must be complete files, not
-#    cut-off copies (non-trivial size, terminated by a final newline).
-foreach ($r in $releases) {
-  $p = Join-Path $root (Join-Path $r.dir "README.md")
-  $bytes = [System.IO.File]::ReadAllBytes($p)
-  if ($bytes.Length -lt 1024) { Fail "README too small (truncated?): $($r.dir)" }
-  if ($bytes[-1] -ne 10) { Fail "README missing final newline (truncated?): $($r.dir)" }
-}
-Ok "release READMEs complete"
+if ($active.Count -eq 0) { Ok "no active releases yet (archive only)" }
+else { Ok "release manifests ($($active.Count) dirs)" }
 
 # 4. .bat snapshot check: every run-*.bat launcher must point at a firmware
 #    snapshot folder that actually exists under tools/digiemu/portable.

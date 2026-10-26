@@ -1,0 +1,330 @@
+{
+ "patcher": "elekloader",
+ "device": "digitone-mk1",
+ "stock": {
+  "path": "D:\\Elektron-MODS\\firmware\\Digitone_and_Digitone_Keys_OS1.44.syx",
+  "sha256": "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659",
+  "os": "1.44",
+  "main_sha256": "fce648a97c6c5d93b961732e8f8db6b02e0820c6d344c7e2131fa05a4b3168e4"
+ },
+ "mods": [
+  {
+   "id": "core",
+   "version": "4.1",
+   "file": "core-dn1-4.1-os1.44.elemod",
+   "sha256": "616714428ca824824efd2bc67eb7b80155ae5547d83abdd60914b063a28b83a9",
+   "format": 2,
+   "sites": 88,
+   "regions": [],
+   "names": [
+    "timer:DTIM0"
+   ]
+  },
+  {
+   "id": "machines",
+   "version": "0.2",
+   "file": "machines-0.2-os1.44.elemod",
+   "sha256": "4d8360703d2f53d4b5ef5aeddef46ca9043c00ef9fd0d0814e9c37dead9f6572",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "soundslot:0"
+   ]
+  },
+  {
+   "id": "dnmono",
+   "version": "1.2",
+   "file": "dnmono-1.2-os1.44.elemod",
+   "sha256": "ecd14061f251fdc8a95af6a7c61780bbeaece1c78a9e2e1784dfab9a75b7bb92",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "dnmachine:10",
+    "dnmachine:11",
+    "dnmachine:12",
+    "dnmachine:13",
+    "dnmachine:14",
+    "dnmachine:15",
+    "dnmachine:16",
+    "dnmachine:18",
+    "dnmachine:19"
+   ]
+  },
+  {
+   "id": "dnsine",
+   "version": "1.1",
+   "file": "dnsine-1.1-os1.44.elemod",
+   "sha256": "a6ddf5a65d733404fa2fa0bb729b110302893db0d8b0d2ebc0d93be9209c1a8f",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "dnmachine:2"
+   ]
+  },
+  {
+   "id": "dnthru",
+   "version": "1.0",
+   "file": "dnthru-1.0-os1.44.elemod",
+   "sha256": "3b755599e05ab256d9e29588af528d5b00a67b955b64c204b9308f609b8a7061",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": []
+  },
+  {
+   "id": "digihealth",
+   "version": "1.1",
+   "file": "digihealth-1.1-os1.44.elemod",
+   "sha256": "b4b093b53a4865f737d5b31203a7c333f3c3d4cca64d5c4c3b3358fb114dd2a2",
+   "format": 2,
+   "sites": 2,
+   "regions": [],
+   "names": [
+    "settings:SYSTEM INFO",
+    "sysex:0x7d"
+   ]
+  },
+  {
+   "id": "tracks",
+   "version": "1.4",
+   "file": "tracks-1.4-os1.44.elemod",
+   "sha256": "ce358b2478fb6b8c1051b95b39a114cad3c08b1de4ae0cec62e189eef6f648e8",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "projdata:TRK8"
+   ]
+  }
+ ],
+ "main_sha256": "3db92affd5574eaf28198e76b16065082ad2187cfdd2e7f09dcec22c38e6af6b",
+ "main_len": 2821276,
+ "link": {
+  "order": [
+   "core 4.1",
+   "digihealth 1.1",
+   "dnmono 1.2",
+   "dnsine 1.1",
+   "dnthru 1.0",
+   "machines 0.2",
+   "tracks 1.4"
+  ],
+  "layout": {
+   "boot": [
+    1076479152,
+    1076479410
+   ],
+   "run_load": 1076479424,
+   "ddr": [
+    1139539968,
+    1139624668
+   ],
+   "bss": [
+    1139624668,
+    1140657512
+   ],
+   "fast": [
+    0,
+    0
+   ],
+   "blob_len": 84972,
+   "sections": {
+    "core .boot": 1076479152,
+    "core .run": 1139539968,
+    "digihealth .run": 1139544956,
+    "dnmono .run": 1139546908,
+    "dnsine .run": 1139611776,
+    "dnthru .run": 1139613056,
+    "machines .run": 1139613556,
+    "tracks .run": 1139622044,
+    "core .bss": 1139624668,
+    "digihealth .bss": 1139625608,
+    "dnmono .bss": 1139628136,
+    "dnsine .bss": 1139640488,
+    "dnthru .bss": 1139640552,
+    "machines .bss": 1139640556,
+    "tracks .bss": 1139645260
+   },
+   "ddr_spare": 193176,
+   "fast_spare": 0,
+   "ddr_size": 1310720,
+   "fast_size": 0
+  },
+  "tables": {
+   "core_audio": {
+    "at": "0x43ed49fc",
+    "entries": 1,
+    "entry": 4
+   },
+   "core_menu": {
+    "at": "0x43ed4a04",
+    "entries": 2,
+    "entry": 4
+   },
+   "core_pages": {
+    "at": "0x43ed4a10",
+    "entries": 0,
+    "entry": 4
+   },
+   "core_param_override": {
+    "at": "0x43ed4a14",
+    "entries": 1,
+    "entry": 4
+   },
+   "core_params": {
+    "at": "0x43ed4a1c",
+    "entries": 0,
+    "entry": 4
+   },
+   "core_projdata": {
+    "at": "0x43ed4a20",
+    "entries": 1,
+    "entry": 4
+   },
+   "dn_machines": {
+    "at": "0x43ed4a28",
+    "entries": 10,
+    "entry": 4
+   },
+   "ev_draw": {
+    "at": "0x43ed4a54",
+    "entries": 4,
+    "entry": 4
+   },
+   "ev_enc": {
+    "at": "0x43ed4a68",
+    "entries": 2,
+    "entry": 4
+   },
+   "ev_hold": {
+    "at": "0x43ed4a74",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_key": {
+    "at": "0x43ed4a78",
+    "entries": 3,
+    "entry": 4
+   },
+   "ev_key_leds": {
+    "at": "0x43ed4a88",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_midi_cc": {
+    "at": "0x43ed4a90",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_midi_pc": {
+    "at": "0x43ed4a94",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_note_queue": {
+    "at": "0x43ed4a98",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_render_in": {
+    "at": "0x43ed4a9c",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_render_out": {
+    "at": "0x43ed4aa4",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_render_params": {
+    "at": "0x43ed4aac",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_render_voices": {
+    "at": "0x43ed4ab0",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_settings": {
+    "at": "0x43ed4ab8",
+    "entries": 2,
+    "entry": 4
+   },
+   "ev_tick": {
+    "at": "0x43ed4ac4",
+    "entries": 3,
+    "entry": 4
+   },
+   "ev_voice_on": {
+    "at": "0x43ed4ad4",
+    "entries": 1,
+    "entry": 4
+   }
+  }
+ },
+ "version": "1448",
+ "output": {
+  "sha256": "1812e8295334e4d2626b6f3eb581c9b55b8922e10aca9fb388e0d2eed5a8e340",
+  "bytes": 1781536,
+  "messages": 13920,
+  "content_checksum": "0x96216835",
+  "container_len": 1405616,
+  "flash_end": "0x1d72b0",
+  "flash_headroom": 1740112,
+  "ele3_version": "1448",
+  "main": {
+   "section": 3,
+   "stored": 1125300,
+   "image": 2821276,
+   "sha256": "3db92affd5574eaf28198e76b16065082ad2187cfdd2e7f09dcec22c38e6af6b",
+   "staged_to": "0x40312bb4",
+   "inplace_min_gap": 400144
+  },
+  "sections": {
+   "5": {
+    "stored": 15,
+    "stored_sha256": "09fc591c313f676c805a8216fb67793039b923f8d53510b3db281257f7fb0819",
+    "stock": true
+   },
+   "2": {
+    "stored": 16052,
+    "stored_sha256": "ff8b24e006803ce39eb253f2f5f7ee210c58d292b2c578bb823c01c9a87aee39",
+    "stock": true
+   },
+   "3": {
+    "stored": 1125300,
+    "stored_sha256": "a8325394d44fd16f2e1bd27202438126f39f9364338d2ce449e45973f0da837e",
+    "stock": false
+   },
+   "4": {
+    "stored": 32776,
+    "stored_sha256": "6fef191122b48a32875d252b655e3501284ba0d0edec1c9d00e728e55342d151",
+    "stock": true
+   },
+   "6": {
+    "stored": 1492,
+    "stored_sha256": "ed432775ea261c4b297b7e23d05701d6ef4b97e0ea04e1314de36d2c0f4b7786",
+    "stock": true
+   },
+   "7": {
+    "stored": 126352,
+    "stored_sha256": "e7bc77121df2cd5edd29cb0242cd9159ac522af1922ac69eb49065f24de50751",
+    "stock": true
+   },
+   "8": {
+    "stored": 103416,
+    "stored_sha256": "764f169834ac9ebcdbc1fd883e9f941be1eb43c2d57e4ff02e04685550838b06",
+    "stock": true
+   }
+  },
+  "untouched": [
+   "sections 2, 4, 5, 6, 7, 8, byte for byte"
+  ],
+  "path": "D:\\Elektron-MODS\\firmware\\releases\\8 tracks\\Digitone_OS1.44_8Tracks.syx"
+ },
+ "map": "Digitone_OS1.44_8Tracks.syx.map.json"
+}

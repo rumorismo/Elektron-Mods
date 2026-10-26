@@ -3,35 +3,26 @@
 Home for all Digitone MK1 firmware mods, releases, and tests.
 
 ## Layout
-- `firmware/releases/v1.44-8tracks-0.7/` — canonical 8-track build 1447 (`Digitone_OS1.44_8Tracks7.syx`, README, `.syx.json`, `.map.json`)
-- `firmware/releases/8 tracks/` — same 1447 build, kept for compat
-- `firmware/releases/v1.44-synth-0.1/` — pure-synth build (Synth 0.1: no pedal FX)
-- `firmware/releases/v1.44-synth-0.2/` — pure-synth build (Synth 0.2: strict 1-voice cap)
-- `firmware/releases/v1.44+-0.1/` — SuperPack build (0.1: all mods)
-- `firmware/releases/v1.44+-0.2/` — SuperPack build (0.2: strict 1-voice cap)
-- `firmware/releases/archive/` — deduped `8 tracks - Copy*` iterations (2–6)
+- `firmware/releases/v1.44-<slug>-0.N/` — active releases, one folder per module-set flavor (created by `tools/release.py`)
+- `firmware/releases/archive/` — frozen history: 8tracks 0.7, `8 tracks`, synth 0.1/0.2, + 0.1/0.2, `8 tracks - Copy*`. Never rebuilt or edited.
 - `firmware/Digitone_and_Digitone_Keys_OS1.44.syx` — stock OS, local only (measured SHA-256 `d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659`, matches `tests/smoke.ps1` and `docs/ARCHITECTURE.md`)
-- `modules/dn-monomachine/` — Machine source reference
-- `modules/digitables/`, `modules/digisophie/`, `modules/digi1_mods/` — reference mods
+- `firmware/elemods/` — curated registry of compiled module binaries the release script links (index: `firmware/elemods/README.md`; stale versions in `firmware/elemods/archive/`)
+- `modules/dn-monomachine/` — ported machine modules (new Digitone modules born here)
+- `modules/digitables/`, `modules/digisophie/`, `modules/digi1_mods/` — reference/upstream Digitakt sources (read-only)
+- `tools/release.py` — generic release driver (see `docs/RELEASE_METHOD.md`)
 - `tools/elekloader/` — patcher + `mods/tracks-dn1/` source (nested clone, local)
 - `tools/digiemu/` — emulator (nested clone, `portable/` snapshots stay local)
-- `openspec/changes/init-firmware-repo/specs/firmware-repo/spec.md` — this repo-init plan's spec
+- `docs/RELEASE_METHOD.md` — the release method every new release follows (6 steps + Verification pyramid)
+- `openspec/specs/firmware-repo/spec.md` — repo capability spec
 
 Binaries (`*.syx`, `*.bin`, `*.elemod`, `*.map.json`) are never committed per `.gitignore`.
 
 ## Build (Windows + WSL)
-WSL Ubuntu provides `m68k-linux-gnu-gcc` for ColdFire `-mcpu=54455`.
-Edit in `d:\Elektron-MODS`, compile via WSL, link via Python.
-`sdk.build --out` takes a **directory** (default `<moddir>/out`):
+Follow `docs/RELEASE_METHOD.md` (the release method). In short: compile changed modules via WSL, then link a release with the driver:
 ```powershell
-wsl bash -c "cd /mnt/d/Elektron-MODS/tools/elekloader && PYTHONPATH=. python3 -m elekloader.sdk.build mods/tracks-dn1 --stock ../../firmware/Digitone_and_Digitone_Keys_OS1.44.syx --out mods/tracks-dn1/out"
+python3 tools/release.py --slug 8tracks --num 8 --tag 1448 --preset 8tracks --emu
 ```
-Then link/patch to `.syx` with one of the release link scripts (each takes an
-optional release iteration, default `0.1`; all run `elekloader.patch --stock …
---mod … --out … --version …` under the hood):
-- `tools/elekloader/build_8tracks.py [N]` → `firmware/releases/v1.44-8tracks-0.N/` + `8 tracks/` (version `144N`; core + machines + dnmono + dnsine + dnthru + digihealth + tracks)
-- `tools/elekloader/build_synth.py [N]` → `firmware/releases/v1.44-synth-0.N/` (version `144S`; pure synth, no pedals)
-- `tools/elekloader/build_syx.py [N]` → `firmware/releases/v1.44+-0.N/` (version `144+`; every elemod = SuperPack)
+That verifies the stock hash, links the elemods, writes `firmware/releases/v1.44-8tracks-0.8/` (`.syx` + manifests + README) and, with `--emu`, the digiemu snapshot + `run-8tracks.bat`.
 
 ## Test
 ```powershell
