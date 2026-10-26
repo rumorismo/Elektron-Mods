@@ -1,0 +1,489 @@
+{
+ "patcher": "elekloader",
+ "device": "digitone-mk1",
+ "stock": {
+  "path": "/mnt/d/Elektron-MODS/firmware/Digitone_and_Digitone_Keys_OS1.44.syx",
+  "sha256": "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659",
+  "os": "1.44",
+  "main_sha256": "fce648a97c6c5d93b961732e8f8db6b02e0820c6d344c7e2131fa05a4b3168e4"
+ },
+ "mods": [
+  {
+   "id": "core",
+   "version": "4.1",
+   "file": "core-dn1-4.1-os1.44.elemod",
+   "sha256": "616714428ca824824efd2bc67eb7b80155ae5547d83abdd60914b063a28b83a9",
+   "format": 2,
+   "sites": 88,
+   "regions": [],
+   "names": [
+    "timer:DTIM0"
+   ]
+  },
+  {
+   "id": "digihalo",
+   "version": "0.2",
+   "file": "digihalo-0.2-os1.44.elemod",
+   "sha256": "4c4fc5552bd2f71eff15042e9d6520f825348e424bd290914d7e5c135eb81e21",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digihalo reverb",
+     "lo": "0x47900000",
+     "hi": "0x47b00000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DSKY"
+   ]
+  },
+  {
+   "id": "digihealth",
+   "version": "1.1",
+   "file": "digihealth-1.1-os1.44.elemod",
+   "sha256": "b4b093b53a4865f737d5b31203a7c333f3c3d4cca64d5c4c3b3358fb114dd2a2",
+   "format": 2,
+   "sites": 2,
+   "regions": [],
+   "names": [
+    "settings:SYSTEM INFO",
+    "sysex:0x7d"
+   ]
+  },
+  {
+   "id": "digihoard",
+   "version": "0.2",
+   "file": "digihoard-0.2-os1.44.elemod",
+   "sha256": "2683e840e5afa1dd27f815a866929ebc9c1e7aefa3e123f57c5c77d235057a96",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digihoard memory",
+     "lo": "0x46200000",
+     "hi": "0x47300000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DHAB"
+   ]
+  },
+  {
+   "id": "digiprism",
+   "version": "0.2",
+   "file": "digiprism-0.2-os1.44.elemod",
+   "sha256": "da66c4101e7ab8ab08837a426ecc2b449dea4ea292781d198bc200660e4198b5",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digiprism buffers",
+     "lo": "0x45b00000",
+     "hi": "0x46200000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DCHR"
+   ]
+  },
+  {
+   "id": "digireel",
+   "version": "0.2",
+   "file": "digireel-0.2-os1.44.elemod",
+   "sha256": "2e71c3feae3403954770a3d43268acea5e86b58b310eb5c3df0be0922bec224d",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digireel tape",
+     "lo": "0x47700000",
+     "hi": "0x47900000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DTEN"
+   ]
+  },
+  {
+   "id": "digiswarm",
+   "version": "0.2",
+   "file": "digiswarm-0.2-os1.44.elemod",
+   "sha256": "d1efc7fd94ea3bb6137611d04a162cead75492a808c4f772731c378e7fe62aac",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digiswarm buffers",
+     "lo": "0x44000000",
+     "hi": "0x45b00000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DCSM"
+   ]
+  },
+  {
+   "id": "digitide",
+   "version": "0.2",
+   "file": "digitide-0.2-os1.44.elemod",
+   "sha256": "9139d071e18a24b8d30012824f5a1db6adc2d8e6608503d7b29aadf33e4f8605",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digitide ring and lines",
+     "lo": "0x47300000",
+     "hi": "0x47700000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DMOD"
+   ]
+  },
+  {
+   "id": "digitriad",
+   "version": "0.2",
+   "file": "digitriad-0.2-os1.44.elemod",
+   "sha256": "af56ad2e7cbfd1956b0b8d5a09ab3a72afee95d98f7f119c04fecf191f3d4cc1",
+   "format": 2,
+   "sites": 0,
+   "regions": [
+    {
+     "name": "digitriad lines",
+     "lo": "0x47b00000",
+     "hi": "0x47be0000",
+     "area": "bulk"
+    }
+   ],
+   "names": [
+    "projdata:DHED"
+   ]
+  },
+  {
+   "id": "dnmono",
+   "version": "1.2",
+   "file": "dnmono-1.2-os1.44.elemod",
+   "sha256": "535a6aaabe31d29a237171ec17ad571e8087aad8f0476c27a37a336302e1665c",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "dnmachine:10",
+    "dnmachine:11",
+    "dnmachine:12",
+    "dnmachine:13",
+    "dnmachine:14",
+    "dnmachine:15",
+    "dnmachine:16",
+    "dnmachine:18",
+    "dnmachine:19"
+   ]
+  },
+  {
+   "id": "dnsine",
+   "version": "1.1",
+   "file": "dnsine-1.1-os1.44.elemod",
+   "sha256": "a6ddf5a65d733404fa2fa0bb729b110302893db0d8b0d2ebc0d93be9209c1a8f",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "dnmachine:2"
+   ]
+  },
+  {
+   "id": "dnthru",
+   "version": "1.0",
+   "file": "dnthru-1.0-os1.44.elemod",
+   "sha256": "3b755599e05ab256d9e29588af528d5b00a67b955b64c204b9308f609b8a7061",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": []
+  },
+  {
+   "id": "fxkit",
+   "version": "0.1",
+   "file": "fxkit-0.1-os1.44.elemod",
+   "sha256": "321c2135140a1f5c5a4152e7b73d3818de2f1bf6da3714d04c39dc8bdadf0dd4",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "projdata:FXKT"
+   ]
+  },
+  {
+   "id": "machines",
+   "version": "0.2",
+   "file": "machines-0.2-os1.44.elemod",
+   "sha256": "085b03f3dda8abbe6c8ec1abf7c063467f5ae63f9617fb1b57c560f43673135d",
+   "format": 2,
+   "sites": 0,
+   "regions": [],
+   "names": [
+    "soundslot:0"
+   ]
+  }
+ ],
+ "main_sha256": "c71ad96ad1863ccac8022c665178c3b961e6983bf6f6e7637e976d5ab1d3340e",
+ "main_len": 3089492,
+ "link": {
+  "order": [
+   "core 4.1",
+   "digihalo 0.2",
+   "digihealth 1.1",
+   "digihoard 0.2",
+   "digiprism 0.2",
+   "digireel 0.2",
+   "digiswarm 0.2",
+   "digitide 0.2",
+   "digitriad 0.2",
+   "dnmono 1.2",
+   "dnsine 1.1",
+   "dnthru 1.0",
+   "fxkit 0.1",
+   "machines 0.2"
+  ],
+  "layout": {
+   "boot": [
+    1076479152,
+    1076479410
+   ],
+   "run_load": 1076479424,
+   "ddr": [
+    1139539968,
+    1139892884
+   ],
+   "bss": [
+    1139892884,
+    1139934292
+   ],
+   "fast": [
+    0,
+    0
+   ],
+   "blob_len": 353188,
+   "sections": {
+    "core .boot": 1076479152,
+    "core .run": 1139539968,
+    "digihalo .run": 1139544956,
+    "digihealth .run": 1139581376,
+    "digihoard .run": 1139583328,
+    "digiprism .run": 1139608988,
+    "digireel .run": 1139680616,
+    "digiswarm .run": 1139706644,
+    "digitide .run": 1139744312,
+    "digitriad .run": 1139777804,
+    "dnmono .run": 1139804180,
+    "dnsine .run": 1139869056,
+    "dnthru .run": 1139870336,
+    "fxkit .run": 1139870836,
+    "machines .run": 1139884288,
+    "core .bss": 1139892884,
+    "digihalo .bss": 1139893824,
+    "digihealth .bss": 1139896976,
+    "digihoard .bss": 1139899504,
+    "digiprism .bss": 1139901012,
+    "digireel .bss": 1139902816,
+    "digiswarm .bss": 1139904188,
+    "digitide .bss": 1139907180,
+    "digitriad .bss": 1139909504,
+    "dnmono .bss": 1139911432,
+    "dnsine .bss": 1139923784,
+    "dnthru .bss": 1139923848,
+    "fxkit .bss": 1139923852,
+    "machines .bss": 1139929624
+   },
+   "ddr_spare": 916396,
+   "fast_spare": 0,
+   "ddr_size": 1310720,
+   "fast_size": 0
+  },
+  "tables": {
+   "core_audio": {
+    "at": "0x43f16080",
+    "entries": 3,
+    "entry": 4
+   },
+   "core_menu": {
+    "at": "0x43f16090",
+    "entries": 9,
+    "entry": 4
+   },
+   "core_pages": {
+    "at": "0x43f160b8",
+    "entries": 0,
+    "entry": 4
+   },
+   "core_param_override": {
+    "at": "0x43f160bc",
+    "entries": 1,
+    "entry": 4
+   },
+   "core_params": {
+    "at": "0x43f160c4",
+    "entries": 0,
+    "entry": 4
+   },
+   "core_projdata": {
+    "at": "0x43f160c8",
+    "entries": 8,
+    "entry": 4
+   },
+   "dn_machines": {
+    "at": "0x43f160ec",
+    "entries": 10,
+    "entry": 4
+   },
+   "ev_draw": {
+    "at": "0x43f16118",
+    "entries": 10,
+    "entry": 4
+   },
+   "ev_enc": {
+    "at": "0x43f16144",
+    "entries": 9,
+    "entry": 4
+   },
+   "ev_hold": {
+    "at": "0x43f1616c",
+    "entries": 7,
+    "entry": 4
+   },
+   "ev_key": {
+    "at": "0x43f1618c",
+    "entries": 9,
+    "entry": 4
+   },
+   "ev_key_leds": {
+    "at": "0x43f161b4",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_midi_cc": {
+    "at": "0x43f161b8",
+    "entries": 7,
+    "entry": 4
+   },
+   "ev_midi_pc": {
+    "at": "0x43f161d8",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_note_queue": {
+    "at": "0x43f161dc",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_render_in": {
+    "at": "0x43f161e4",
+    "entries": 8,
+    "entry": 4
+   },
+   "ev_render_out": {
+    "at": "0x43f16208",
+    "entries": 8,
+    "entry": 4
+   },
+   "ev_render_params": {
+    "at": "0x43f1622c",
+    "entries": 0,
+    "entry": 4
+   },
+   "ev_render_voices": {
+    "at": "0x43f16230",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_settings": {
+    "at": "0x43f16238",
+    "entries": 1,
+    "entry": 4
+   },
+   "ev_tick": {
+    "at": "0x43f16240",
+    "entries": 10,
+    "entry": 4
+   },
+   "ev_voice_on": {
+    "at": "0x43f1626c",
+    "entries": 1,
+    "entry": 4
+   },
+   "fx_effects": {
+    "at": "0x43f16274",
+    "entries": 7,
+    "entry": 4
+   }
+  }
+ },
+ "version": "144M",
+ "output": {
+  "sha256": "07b0a4bfbf094f743e28cd6f48fbc0d74d0186903058c6fe46b90b639c99f353",
+  "bytes": 1963808,
+  "messages": 15344,
+  "content_checksum": "0x39c28e12",
+  "container_len": 1549472,
+  "flash_end": "0x1fa4a0",
+  "flash_headroom": 1596256,
+  "ele3_version": "144M",
+  "main": {
+   "section": 3,
+   "stored": 1269164,
+   "image": 3089492,
+   "sha256": "c71ad96ad1863ccac8022c665178c3b961e6983bf6f6e7637e976d5ab1d3340e",
+   "staged_to": "0x40335dac",
+   "inplace_min_gap": 275791
+  },
+  "sections": {
+   "5": {
+    "stored": 15,
+    "stored_sha256": "09fc591c313f676c805a8216fb67793039b923f8d53510b3db281257f7fb0819",
+    "stock": true
+   },
+   "2": {
+    "stored": 16052,
+    "stored_sha256": "ff8b24e006803ce39eb253f2f5f7ee210c58d292b2c578bb823c01c9a87aee39",
+    "stock": true
+   },
+   "3": {
+    "stored": 1269164,
+    "stored_sha256": "e286cbf3a773d25b1bc0ab75baa8c70f2835b06b5118ccb8a6d1faa1db9e109e",
+    "stock": false
+   },
+   "4": {
+    "stored": 32776,
+    "stored_sha256": "6fef191122b48a32875d252b655e3501284ba0d0edec1c9d00e728e55342d151",
+    "stock": true
+   },
+   "6": {
+    "stored": 1492,
+    "stored_sha256": "ed432775ea261c4b297b7e23d05701d6ef4b97e0ea04e1314de36d2c0f4b7786",
+    "stock": true
+   },
+   "7": {
+    "stored": 126352,
+    "stored_sha256": "e7bc77121df2cd5edd29cb0242cd9159ac522af1922ac69eb49065f24de50751",
+    "stock": true
+   },
+   "8": {
+    "stored": 103416,
+    "stored_sha256": "764f169834ac9ebcdbc1fd883e9f941be1eb43c2d57e4ff02e04685550838b06",
+    "stock": true
+   }
+  },
+  "untouched": [
+   "sections 2, 4, 5, 6, 7, 8, byte for byte"
+  ],
+  "path": "/mnt/d/Elektron-MODS/firmware/Digitone_OS1.44_MODDED.syx"
+ },
+ "map": "Digitone_OS1.44_MODDED.syx.map.json"
+}

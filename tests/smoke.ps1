@@ -9,7 +9,7 @@ function Fail($m) { Write-Host "FAIL $m"; exit 1 }
 $stock = Join-Path $root "firmware\Digitone_and_Digitone_Keys_OS1.44.syx"
 if (!(Test-Path $stock)) { Fail "stock syx missing" }
 $h = (certutil -hashfile $stock SHA256 | Select-String "^[0-9a-f]{64}$").ToString().Trim().ToLower()
-if ($h -ne "d4f200d04484333d82822db7744e6484d0def8f2bc67b7752bd55ee2fb780cc13c9659") { Fail "stock hash mismatch: $h" }
+if ($h -ne "d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659") { Fail "stock hash mismatch: $h" }
 Ok "stock hash"
 
 # 2. Canonical release manifest

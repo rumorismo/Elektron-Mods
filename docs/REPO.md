@@ -6,7 +6,7 @@ Home for all Digitone MK1 firmware mods, releases, and tests.
 - `firmware/releases/v1.44-8tracks-0.7/` — canonical 8-track build 1447 (`Digitone_OS1.44_8Tracks7.syx`, README, `.syx.json`, `.map.json`)
 - `firmware/releases/8 tracks/` — same 1447 build, kept for compat
 - `firmware/releases/archive/` — deduped `8 tracks - Copy*` iterations
-- `firmware/Digitone_and_Digitone_Keys_OS1.44.syx` — stock OS, local only (SHA-256 `d4f200d04484333d82822db7744e6484d0def8f2bc67b7752bd55ee2fb780cc13c9659`)
+- `firmware/Digitone_and_Digitone_Keys_OS1.44.syx` — stock OS, local only (measured SHA-256 `d4f200d04484333d82822db7744e6484d0def8f2db8ddf55ee2b780cc13c9659`; README previously listed `...bc67...`, 8-track build manifest used `...bc67...` — re-verify stock download before next build)
 - `modules/dn-monomachine/` — Machine source reference
 - `modules/digitables/`, `modules/digisophie/`, `modules/digi1_mods/` — reference mods
 - `tools/elekloader/` — patcher + `mods/tracks-dn1/` source (nested clone, local)
