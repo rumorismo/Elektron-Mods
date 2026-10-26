@@ -3,18 +3,18 @@
 ## 1. Adopt the existing scaffolding
 
 - [x] 1.1 Commit the on-disk scaffolding (`tools/release.py`, `docs/RELEASE_METHOD.md`, dynamic `tests/smoke.ps1`, `docs/REPO.md`, `README.md` tree update, release archive moves) and verify `smoke.ps1` passes and `git status` shows no firmware tracked
-- [ ] 1.2 Add `docs/RELEASE_METHOD.md` verification section (pyramid, evidence hierarchy, hardware checklist from the research: simultaneous instances, track isolation, project persistence, reboot survival) and verify every command in the doc runs as written
+- [x] 1.2 Add `docs/RELEASE_METHOD.md` verification section (pyramid, evidence hierarchy, hardware checklist from the research: simultaneous instances, track isolation, project persistence, reboot survival) and verify every command in the doc runs as written
 
 ## 2. Constrained release driver
 
-- [ ] 2.1 Add flavor definitions to `tools/release.py` (required/forbidden elemods per flavor, starting with `8tracks`) and verify a flavor-mismatch build refuses
-- [ ] 2.2 Add tag-collision scan across `firmware/releases/**` manifests (active + archive) and verify reusing tag `1447` refuses
-- [ ] 2.3 Add budget assertions (`ddr_spare`, `flash_headroom` minimums per flavor) and verification of `link.order`/`tables` counts from the written `.syx.json`, and verify an over-budget or wrong-set build refuses with measured values
-- [ ] 2.4 Extend the README stub with `## Verification` block (output SHA-256, WSL gcc version, `emu boot: untested <date>` / `hardware: untested`) and `Known issue:` release-notes line, and verify a dry build writes all of it
+- [x] 2.1 Add flavor definitions to `tools/release.py` (required/forbidden elemods per flavor, starting with `8tracks`) and verify a flavor-mismatch build refuses
+- [x] 2.2 Add tag-collision scan across `firmware/releases/**` manifests (active + archive) and verify reusing tag `1447` refuses
+- [x] 2.3 Add budget assertions (`ddr_spare`, `flash_headroom` minimums per flavor) and verification of `link.order`/`tables` counts from the written `.syx.json`, and verify an over-budget or wrong-set build refuses with measured values
+- [x] 2.4 Extend the README stub with `## Verification` block (output SHA-256, WSL gcc version, `emu boot: untested <date>` / `hardware: untested`) and `Known issue:` release-notes line, and verify a dry build writes all of it
 
 ## 3. Boot proof (L1)
 
-- [ ] 3.1 Spike: validate the snapshot-oracle against stock OS 1.44 and the archived 8tracks-0.7 build (`--add`, timeout, confirm snapshot appears only after UI settles; check which log files carry fault output) and record findings in `docs/EMU_TESTING.md`
+- [x] 3.1 Spike: validate the snapshot-oracle against stock OS 1.44 and the archived 8tracks-0.7 build (`--add`, timeout, confirm snapshot appears only after UI settles; check which log files carry fault output) and record findings in `docs/EMU_TESTING.md`
 - [x] 3.2 Write `tests/boot-check.ps1` (add syx to digiemu, wait with timeout, assert snapshot dir, grep logs for fault strings) and verify it passes on stock and on 8tracks-0.7, and fails/times out on a deliberately truncated syx
 - [x] 3.3 Wire boot-check into the documented release flow (RELEASE_METHOD step 3) and verify the doc's command sequence runs end-to-end against a real build
 
