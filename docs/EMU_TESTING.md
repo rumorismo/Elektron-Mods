@@ -48,6 +48,31 @@ Read-only investigation, no builds or emulator runs. Code refs are `tools/digiem
   LOAD_FAILED|INCOMPATIBLE`, plus `truncated or damaged` (expected only in the
   negative test — `release.py:424–428`).
 
+## 5. Converter probe contract (GUI-first, regression-only headless)
+
+Manual panel (user, resumed `dn1-<tag>-<hash8>`) covers: confirm modal,
+convert/flip-back, browser, voice menu, b-labels, synth pages, mutes,
+sequencer. Record concrete values in the release README; audio verdicts
+stay `hw-pending`.
+
+Headless probe (planned home `tests/probe/`: `harness.py` + `scenarios/`
++ `baselines/*.json`) asserts only:
+- CNV8 scan with the `<=2` validation guard,
+- MIDI byte-sink vs cached stock baseline (`--refresh-baseline` only when
+  the fixture changes; never re-measure stock per run),
+- framebuffer hash (screens kept as hash; raw/PNG only on failure),
+- memory peeks at `FW_PATTERN 0x4138f214`, `FW_KIT 0x4138f220`,
+  `FW_ACTIVE_TRACK 0x41368ce0`, mutes `+0x16108`.
+
+Mechanics (from `openspec/changes/archive/2026-10-27-8tracksim/probe-workflow.md`):
+snapshot reuse (rebuild on exit 3 only), single `Session` for all
+scenarios with clean-project-reload reset, setup as library calls
+(`route_midi`, `enable_chan`, `program`, `chord`), 1–2 bar captures with
+poll-until-stable settle (no fixed 8 s PLAYs), one JSON report per run.
+Target: behavior-check iteration well under 60 s; L1 cold boot stays a
+one-time ~30–80 s cost per new build. Anything audible (mix, stealing,
+mute feel) and all hardware verdicts stay manual per the evidence hierarchy.
+
 ## Evaluation record (2026-10-26, strict gate in force)
 
 - Stock OS 1.44: PASS (`dn1-1.44-d4f200d0`, `gui.snap` + clean `first-run.log`).
