@@ -8,7 +8,7 @@ The 8tracksim stepping stone proved conversion is a per-site `track>3` branch pa
 - Converted slots behave like native synth: trig dispatch through synth-fire, sound fetch from mod `.bss` + voice-cache warm, sequencer/mutes, double-click sound browser, voice menu, synth param pages, b1..b4 labels.
 - Shared trigs: one 976 B pattern per slot shared by both sides; only engine routing + sound/params flip. MIDI channel configured pre-convert is preserved and the converted synth outputs on that channel.
 - Labels show `b1..b4` top-left for converted slots (intentionally distinct, not native `TRK.n`).
-- Probe strategy goes GUI-first: user covers browser/menu/labels/mute/sequencer by hand in `dnpanel`; headless probe shrinks to regression-only (CNV8, MIDI byte-identity vs cached stock baseline, framebuffer hash) with snapshot reuse + single session + minimal windows (<60 s target).
+- Probe strategy goes GUI-first: user covers browser/menu/labels/mute/sequencer by hand in `dnpanel` (run `cd tools/digiemu && .venv/bin/python -m emu.dnpanel portable/firmware/<slug>`); headless probe shrinks to regression-only (CNV8, MIDI byte-identity vs a freshly captured stock MIDI-byte log, framebuffer hash) with snapshot reuse + single session + minimal windows (<60 s target).
 
 ## Capabilities
 ### New Capabilities
@@ -16,10 +16,10 @@ The 8tracksim stepping stone proved conversion is a per-site `track>3` branch pa
 
 ### Modified Capabilities
 - `track-type-conversion`: confirm-modal gesture, full synth parity (audio/browser/menu/labels/pages), shared-trig stash, MIDI-channel preserve, b1..b4 labels.
-- `firmware-verification`: GUI-first L2 for converter parity + regression-only headless probe (snapshot reuse, cached baselines).
+- `firmware-verification`: GUI-first L2 for converter parity + regression-only headless probe (snapshot reuse, freshly captured stock baselines).
 
 ## Impact
-- `modules/dn-convert/` (converter 0.3 → full parity: S1/S2 + fetch interpose, browser sites, S3/S4, S6/S7 b-labels, S8, S5 classify, S9 verify, modal UI, shared-trig flip, channel preserve).
+- `modules/dn-convert/` (converter 0.11 → full parity: browser sites, S3/S4, S6/S7 b-labels, S8, S5 classify, S9 verify, modal UI, shared-trig flip, channel preserve — S1/S2/F3 + fetch interpose + allocator staging already landed; voice sustain still open).
 - `tools/release.py`: converter flavor + first release (carried from stepping stone 4.1).
 - `docs/`: `EMU_TESTING.md` (regression-only harness contract), `EMULATOR_WORKFLOW.md` (resume + manual panel flow), `RELEASE_METHOD.md` L2 (converter B-procedures replace bank B1–B4 for this line).
 - Load-bearing unknowns: exact fetch load site inside `0x4009451e`; browser open/apply sites (unenumerated); S3/S4/S8 register proof (`d4`/`d2`/`d0` = track).

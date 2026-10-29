@@ -101,9 +101,10 @@ powershell -ExecutionPolicy Bypass -File tests/boot-check.ps1
 
 ### L2 — behavior tests (manual panel procedures, spike-gated)
 
-Automation is pending spike findings, which land in `docs/EMU_TESTING.md`
-(not yet written). Until then, run these four checks by hand on the panel
-(emulator or hardware) and record the outcome in the release README.
+Automation covers the regression half (`tests/probe/harness.py`, see
+`docs/EMU_TESTING.md` §5); the checks below stay manual per the evidence
+hierarchy. Run them by hand on the panel (emulator or hardware) and record
+the outcome in the release README.
 Emulator results are emulator evidence only (see Evidence hierarchy).
 
 #### Converter line (8track-engine): GUI-first L2

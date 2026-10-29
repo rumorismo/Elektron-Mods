@@ -44,6 +44,10 @@ PRESETS = {
         "digihealth-1.1-os1.44.elemod",
         "tracks-1.4-os1.44.elemod",
     ],
+    "8track-engine": [
+        "core-dn1-4.1.1-os1.44.elemod",
+        "convert-0.23-os1.44.elemod",
+    ],
 }
 
 # Flavor definitions: required/forbidden elemod id substrings (matched
@@ -55,6 +59,16 @@ FLAVORS = {
     "8tracks": {
         "required": ["core", "machines", "dnmono", "dnsine", "dnthru",
                      "digihealth", "tracks"],
+        "forbidden": [],
+        "min_ddr_spare": 150000,
+        "min_flash_headroom": 1500000,
+    },
+    # Converted tracks reuse the stock FM engine, so no machines modules
+    # are needed: core + convert only. Budgets mirror the 8tracks flavor
+    # (measured core+convert 0.23: ddr_spare 1290048, flash_headroom
+    # 1791520 — headroom far above both minima).
+    "8track-engine": {
+        "required": ["core", "convert"],
         "forbidden": [],
         "min_ddr_spare": 150000,
         "min_flash_headroom": 1500000,
@@ -125,7 +139,7 @@ def find_tag_holders(tag):
 
 
 def gcc_version():
-    """WSL ColdFire gcc version line; 'unknown' on any failure (never fatal)."""
+    """native ColdFire gcc version line; 'unknown' on any failure (never fatal)."""
     cmds = [
         ["m68k-linux-gnu-gcc", "--version"],
         ["wsl", "bash", "-c",
@@ -191,7 +205,7 @@ def main():
     ap.add_argument("--mod", action="append", default=[], dest="mods",
                     help="elemod file name in firmware/elemods (repeatable)")
     ap.add_argument("--emu", action="store_true",
-                    help="also add to digiemu (snapshot) and write run-<slug>.bat")
+                    help="also add to digiemu (snapshot) and write run-<slug>.bat + run-<slug>.sh")
     a = ap.parse_args()
 
     tag = a.tag or f"144{a.num}"
@@ -264,7 +278,7 @@ Known issue: 1-voice cap — simultaneous custom-machine voices may cause
 audio cracking under load; see docs/VOICE_OPTIMIZATION.md.
 
 ## Try in emulator
-Run `run-{a.slug}.bat` at the repo root (first run: build with `--emu`).
+Run `run-{a.slug}.sh` (Linux) or `run-{a.slug}.bat` (Windows) at the repo root (first run: build with `--emu`).
 
 ## Flash
 Hold [FUNC] while powering on, press [TRIG 4] (MIDI upgrade), send
@@ -275,7 +289,10 @@ Hold [FUNC] while powering on, press [TRIG 4] (MIDI upgrade), send
         print(f"README kept: {readme}")
 
     if a.emu:
-        py = os.path.join(DIGIEMU, ".venv", "Scripts", "python.exe")
+        if os.name == "nt":
+            py = os.path.join(DIGIEMU, ".venv", "Scripts", "python.exe")
+        else:
+            py = os.path.join(DIGIEMU, ".venv", "bin", "python")
         if not os.path.exists(py):
             die(f"digiemu venv missing: {py}")
         res = subprocess.run([py, "-m", "emu.portable", "--add", out], cwd=DIGIEMU)
@@ -298,6 +315,19 @@ Hold [FUNC] while powering on, press [TRIG 4] (MIDI upgrade), send
                 'pause\n'
             )
         print(f"Wrote {bat} (snapshot {snap})")
+        sh = os.path.join(ROOT, f"run-{a.slug}.sh")
+        with open(sh, "w", newline="\n") as f:
+            f.write(
+                '#!/usr/bin/env bash\n'
+                'set -euo pipefail\n'
+                'SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"\n'
+                'cd "$SCRIPT_DIR/tools/digiemu"\n'
+                'export PYTHONPATH="$SCRIPT_DIR/tools/digiemu"\n'
+                'exec .venv/bin/python -m emu.portable --worker panel '
+                f'"$SCRIPT_DIR/tools/digiemu/portable/firmware/{snap}"\n'
+            )
+        os.chmod(sh, 0o755)
+        print(f"Wrote {sh} (snapshot {snap})")
 
     print("Release ready:")
     print(" -", out)
