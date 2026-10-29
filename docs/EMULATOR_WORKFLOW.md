@@ -91,3 +91,31 @@ When you compile a custom mod or export a patched `.syx` from `elekloader`:
    ```
 3. Test your mod's menus, knobs, and sound output on your screen before flashing it to real hardware.
 
+## 5. Fast iteration: resume, don't re-boot (converter workflow)
+
+Cold boot (`--add`: extract + card + ladder + intro + settle, ~25-35 s)
+happens **once per new `.syx`**. Every check after that resumes the
+settled snapshot — never re-boots per scenario:
+
+```bash
+# once per build: settle + snapshot (writes dn1-<tag>-<hash8>/gui.snap)
+cd tools/digiemu && .venv/bin/python -m emu.portable --add /path/to/build.syx --yes
+# every manual check after: resume the settled snapshot instantly
+cd tools/digiemu && .venv/bin/python -m emu.dnpanel portable/firmware/dn1-<tag>-<hash8>
+# (Windows twins: .venv\Scripts\python.exe, backslash paths)
+```
+
+Rules that keep iteration under 60 s (full reasoning in
+`openspec/changes/archive/2026-10-27-8tracksim/probe-workflow.md`):
+- One settled `gui.snap` per firmware hash (`dn1-<tag>-<hash8>`); rebuild
+  with `--add` only on exit 3 / "Rebuild needed".
+- Manual panel checks (modal, browser, voice menu, b-labels, synth pages,
+  mutes, sequencer) run in the resumed panel — no headless session needed.
+- Headless `Session` is regression-only (CNV8 scan, MIDI byte-identity vs
+  checked-in `tests/probe/baselines/stock.json`, framebuffer hash); single
+  session per scenario, reset via clean-project reload, 1–2 bar captures,
+  poll-until-stable instead of fixed PLAY sleeps.
+- Stock baseline is captured once (`harness.py --refresh-baseline`), not re-measured per run.
+- Entry point: `tests/probe/harness.py [--scenario NAME...] [--out FILE]`
+  (run from `tools/digiemu` with its venv); full-run evidence per release.
+

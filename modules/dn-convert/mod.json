@@ -1,0 +1,188 @@
+{
+  "id": "convert",
+  "version": "0.25",
+  "license": "GPL-2.0-or-later",
+  "title": "MIDI-to-synth track converter",
+  "category": "Expansion",
+  "author": "Elektron-MODS",
+  "description": "Per-track MIDI<->synth converter for Digitone MK1 slots 4-7: MIDI+VOICE chord opens a YES/NO modal card (YES flips under interrupt mask, NO/timeout cancels, plain VOICE falls through, chord on 0-3 falls through); shared-trig flip keeps the live 976B pattern in place and swaps only the 326B synth sound (.bss) <-> 164B MIDI params + mute, first convert stages the kit slot-0 timbre (a zeroed record renders silence); HUD toast + LED feedback. S1/S2 dispatch interpose routes converted tracks to the stock synth fork (0-3 unchanged); F3 fetch interpose serves converted fires from mod .bss with voice-cache warm + per-track voice-flag/candidate-row stage. B0/B1/B2/B3/B4/B5/B6 browser interpose routes converted double-taps to the stock synth browser (bank-check divert + track>3 branch + mod-owned 808B session rows + open-gate switch-block skip + refresh-gate commit + apply-gate mirror) whose +16 points at the slot .bss sound, so preset-apply lands in .bss (kit untouched). V8 voice-menu bank divert routes converted plain-VOICE presses to the stock synth menu chain (bank-check divert at 0x4003f642; S3 0x4003df40/S4 0x40043258 proven not-on-path and left stock). L3 keyboard transpose-row divert draws converted slots with custom b1..b4 labels from mod .rodata (track divert at 0x400c28c2; S6 0x400bbd84/S7 0x40061ce4 proven not-on-converted-path and left stock). P1/P2 page divert routes converted param-page opens to the stock synth chain (view-track mirror-map at 0x40042240 + mod-owned 808B page row at 0x4004253c whose +16 points at the slot .bss sound, so draws read .bss and knob edits write .bss; P4 content divert forces the synth views table section at the entry-filler bank fork (moveq #3/cmp/bcs at 0x4003f184, d3 proven == track) for converted slots, so converted page keys open the synth views (SYN1/SYN2/FLTR/AMP as on native); C1 MAIN-page filler divert forces the synth views table section at the refresh-time filler bank fork (moveq #3/cmp/bcs at 0x4003db2c, d3 proven == ACTIVE on TRIG opens) for converted slots, so the converted MAIN page fills the synth views (S5 0x4003ca70 proven silent on TRIG opens and left stock); A1 MAIN value-resolver mirror maps the shared track->struct resolver track to the mirror slot (moveq #3/cmp/bcs at 0x4001d860, d1 proven == ACTIVE on TRIG opens; live d1->slot override flips converted knob values to the slot synth struct, S4B d0->0 override proven no-op and left stock) for converted slots, so converted MAIN-page knob values resolve from the slot synth struct as on native; P3 view-9 gate backs the v84 render gate (move.l d0/d2 + beq.w at 0x40042da8, verdict 9 proven native-only, caller-guarded); P5a/P5b param-edit sound divert returns the slot .bss sound from the row session +$28 virtuals (0x4002102a synth-editor + 0x400215d0 MIDI-editor) for converted slots, so knob edits write .bss; S8 0x40160968/S5 0x4003ca70 proven silent on page opens and left stock).",
+  "device": "digitone-mk1",
+  "os": "1.44",
+  "sources": [
+    "convert.c",
+    "cnv_route.s",
+    "cnv_fetch.s",
+    "cnv_browse.s",
+    "cnv_voice.s",
+    "cnv_label.s",
+    "cnv_page.s"
+  ],
+  "sites": [
+    {
+      "addr": "0x40094d44",
+      "stock": "7203114700f3b2826d26",
+      "op": "jsr",
+      "target": "cnv_site_s1"
+    },
+    {
+      "addr": "0x40095afa",
+      "stock": "7003b0826d4e",
+      "op": "jsr",
+      "target": "cnv_site_s2"
+    },
+    {
+      "addr": "0x40094832",
+      "stock": "203c000001464c004800206f006841f048182548002c",
+      "op": "jsr",
+      "target": "cnv_site_f3"
+    },
+    {
+      "addr": "0x4004ef1a",
+      "stock": "4eb94002e1ae",
+      "op": "jsr",
+      "target": "cnv_site_b0"
+    },
+    {
+      "addr": "0x4004eda8",
+      "stock": "7203b2826548",
+      "op": "jsr",
+      "target": "cnv_site_b1"
+    },
+    {
+      "addr": "0x4004edb2",
+      "stock": "4eb94001dcf2",
+      "op": "jsr",
+      "target": "cnv_site_b2"
+    },
+    {
+      "addr": "0x4001d73e",
+      "stock": "4c00280045f32860",
+      "op": "jsr",
+      "target": "cnv_site_b3"
+    },
+    {
+      "addr": "0x4004edfe",
+      "stock": "588fb4806764",
+      "op": "jsr",
+      "target": "cnv_site_b4"
+    },
+    {
+      "addr": "0x400400ec",
+      "stock": "4eb940025b76",
+      "op": "jsr",
+      "target": "cnv_site_b5"
+    },
+    {
+      "addr": "0x400cdb8e",
+      "stock": "4eb94002c6ba",
+      "op": "jsr",
+      "target": "cnv_site_b6"
+    },
+    {
+      "addr": "0x4003f642",
+      "stock": "4eb94002e1ae",
+      "op": "jsr",
+      "target": "cnv_site_v8"
+    },
+    {
+      "addr": "0x400c28c2",
+      "stock": "bc8d6d264879418e934c",
+      "op": "jsr",
+      "target": "cnv_site_l3"
+    },
+    {
+      "addr": "0x40042240",
+      "stock": "4eb94002c6ba",
+      "op": "jsr",
+      "target": "cnv_site_p1"
+    },
+    {
+      "addr": "0x4004253c",
+      "stock": "4eb94001dcf2",
+      "op": "jsr",
+      "target": "cnv_site_p2"
+    },
+    {
+      "addr": "0x40042da8",
+      "stock": "2400670000b2",
+      "op": "jsr",
+      "target": "cnv_site_p3"
+    },
+    {
+      "addr": "0x4003f184",
+      "stock": "7003b0836506",
+      "op": "jsr",
+      "target": "cnv_site_p4"
+    },
+    {
+      "addr": "0x4002102a",
+      "stock": "206900284e90",
+      "op": "jsr",
+      "target": "cnv_site_p5a"
+    },
+    {
+      "addr": "0x400215d0",
+      "stock": "206900284e90",
+      "op": "jsr",
+      "target": "cnv_site_p5b"
+    },
+    {
+      "addr": "0x4003db2c",
+      "stock": "7203b283650a",
+      "op": "jsr",
+      "target": "cnv_site_c1"
+    },
+    {
+      "addr": "0x4001d860",
+      "stock": "7403b4816514",
+      "op": "jsr",
+      "target": "cnv_site_a1"
+    }
+  ],
+  "subscribe": [
+    {
+      "event": "ev_key",
+      "fn": "cnv_key",
+      "order": 10
+    },
+    {
+      "event": "ev_tick",
+      "fn": "cnv_tick",
+      "order": 30
+    },
+    {
+      "event": "ev_draw",
+      "fn": "cnv_draw",
+      "order": 70
+    },
+    {
+      "event": "ev_key_leds",
+      "fn": "cnv_key_leds",
+      "order": 10
+    }
+  ],
+  "contribute": [
+    {
+      "to": "core_projdata",
+      "order": 80,
+      "data": "00000000",
+      "relocs": [
+        [
+          0,
+          "abs32",
+          "sym:cnv_projdata",
+          0
+        ]
+      ]
+    }
+  ],
+  "resources": {
+    "names": [
+      "projdata:CNV8"
+    ],
+    "core": "4.1"
+  },
+  "requires": [
+    "core"
+  ]
+}

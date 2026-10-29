@@ -101,10 +101,38 @@ powershell -ExecutionPolicy Bypass -File tests/boot-check.ps1
 
 ### L2 — behavior tests (manual panel procedures, spike-gated)
 
-Automation is pending spike findings, which land in `docs/EMU_TESTING.md`
-(not yet written). Until then, run these four checks by hand on the panel
-(emulator or hardware) and record the outcome in the release README.
+Automation covers the regression half (`tests/probe/harness.py`, see
+`docs/EMU_TESTING.md` §5); the checks below stay manual per the evidence
+hierarchy. Run them by hand on the panel (emulator or hardware) and record
+the outcome in the release README.
 Emulator results are emulator evidence only (see Evidence hierarchy).
+
+#### Converter line (8track-engine): GUI-first L2
+Converter releases verify parity by hand in the resumed panel
+(`docs/EMULATOR_WORKFLOW.md` section 5: resume `dn1-<tag>-<hash8>`, no
+re-boot per check). Headless probe is regression-only: CNV8 scan,
+MIDI byte-identity vs cached `tests/probe/baselines/`, framebuffer hash —
+single `Session`, project-reload reset, 1–2 bar captures,
+poll-until-stable, target <60 s per iteration (L1 cold boot excepted).
+Full harness reasoning lives in
+`openspec/changes/archive/2026-10-27-8tracksim/probe-workflow.md`.
+
+C1 — modal convert / restore (shared trigs, channel preserved):
+1. On MIDI slot 5–8 press `MIDI`+`VOICE` → YES/NO modal appears.
+2. YES → slot voices as synth (`b1..b4` label) on the same channel with
+   the same trigs; NO/timeout → unchanged. Repeat chord + YES restores MIDI.
+
+C2 — sound browser + synth pages + voice menu:
+1. Double-click a converted slot → synth preset browser opens, chosen
+   preset sounds on that slot. 2. Plain `VOICE` opens the synth voice menu.
+3. Synth pages (SYN1/SYN2/FLTR/AMP/FX) respond as on native tracks.
+
+C3 — mutes + sequencer + MIDI coexistence:
+1. Mute/unmute each converted slot; sequence all 8 together.
+2. Expected: per-track mutes, no leaks, stock 8-voice stealing only.
+3. Unconverted MIDI slots stay byte-identical (regression probe asserts).
+
+#### Bank line (legacy B1–B4, bank releases only)
 
 #### B1 — bank-toggle swap
 1. Load a pattern with distinct sequences on tracks T1–T4 (foreground bank).
